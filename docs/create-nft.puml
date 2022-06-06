@@ -1,0 +1,17 @@
+@startuml
+
+participant "User" as user
+participant "Burnt UI App" as burntui
+participant "Link CRUD API" as linksapi
+participant "Blockchain" as blockc
+participant "ipfs" as storage
+
+autonumber
+
+user -> burntui: Upload images and JSONs
+burntui -> blockc: deploy smart contract
+burntui-> storage: Upload images and JSONs
+storage -> burntui: Links to the uploaded data
+burntui -> linksapi: POST list of links with collection id and smart contract address
+
+@enduml

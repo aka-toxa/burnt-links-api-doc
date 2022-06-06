@@ -1,0 +1,14 @@
+@startuml
+
+participant "User" as user
+participant "Minting App" as minter
+participant "Link CRUD API" as linksapi
+participant "Blockchain" as blockc
+
+autonumber
+
+user -> minter: Minting request: collection id, media id
+minter -> linksapi: get ipfs links, smart contract address
+minter -> blockc: call mint function on smart contract address with the link to ipfs
+
+@enduml

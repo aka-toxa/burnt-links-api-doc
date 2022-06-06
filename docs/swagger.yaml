@@ -1,0 +1,92 @@
+swagger: "2.0"
+info:
+  description: "The API to keep and manage links to a preloaded images and JSONs of the tokens before minting"
+  version: "1.0.0"
+  title: "Burnt preloaded assets manager"
+host: "assets.burnt.com"
+basePath: "/v1"
+schemes:
+  - "https"
+paths:
+  /:
+    post:
+      tags:
+        - "asset"
+      summary: "Add new asset to the DB"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/xml"
+      parameters:
+        - in: "body"
+          name: "body"
+          description: "Asset object"
+          required: true
+          schema:
+            $ref: "#/definitions/Asset"
+      responses:
+        "405":
+          description: "Invalid input"
+    get:
+      tags:
+        - "asset"
+      summary: "Get assets list"
+      produces:
+        - "application/json"
+      parameters:
+        - name: "smart_contract"
+          in: "query"
+          description: "fetch assets for a given smart contract address only"
+          type: string
+          required: false
+        - name: "collection_id"
+          in: "query"
+          description: "fetch assets for a given collection only"
+          type: string
+          required: false
+      responses:
+        "200":
+          description: "A list of assets"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/Asset"
+  /{id}:
+    get:
+      tags:
+        - "asset"
+      summary: "Get asset by ID"
+      description: "get a single asset by it's id"
+      produces:
+        - "application/json"
+      parameters:
+        - name: "id"
+          in: "path"
+          description: "ID of an asset to return"
+          required: true
+          type: "string"
+          format: "uuid"
+      responses:
+        "200":
+          description: "successful"
+          schema:
+            $ref: "#/definitions/Asset"
+        "404":
+          description: "No asset found"
+definitions:
+  Asset:
+    type: "object"
+    properties:
+      id:
+        type: "string"
+        format: "uuid"
+      link:
+        type: "string"
+      linkType:
+        type: "string"
+        enum: ["ipfs", "nft-storage", "s3"]
+      collectionId:
+        type: "string"
+        format: "uuid"
+      smartContract:
+        type: "string"
